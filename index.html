@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة حاسبات العملات</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+        }
+        .calculator-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            color: #111;
+            margin-bottom: 0.5rem;
+            text-align: right;
+        }
+        .formula-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+        .input-group {
+            margin-bottom: 1.25rem;
+            text-align: right;
+        }
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+            text-align: left;
+            direction: ltr;
+        }
+        input:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .result-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin-top: 0.25rem;
+            direction: ltr;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="margin-bottom: 2rem; font-size: 1.5rem; color: #222;">لوحة حاسبات العملات</h1>
+
+    <div class="container">
+        <!-- الحاسبة الأولى: (100,000 × المبلغ المحول) ÷ السعر -->
+        <div class="calculator-card">
+            <h2>حاسبة المبلغ المحول</h2>
+            <div class="formula-text">الصيغة: (100,000 × المبلغ المحول) ÷ السعر</div>
+            
+            <div class="input-group">
+                <label for="userNumber1">المبلغ المحول</label>
+                <input type="number" id="userNumber1" value="10" step="any">
+            </div>
+
+            <div class="input-group">
+                <label for="portionNumber1">السعر</label>
+                <input type="number" id="portionNumber1" value="2" step="any">
+            </div>
+
+            <div class="result-box">
+                <div class="result-label">النتيجة</div>
+                <div class="result-value" id="resultOutput1">0</div>
+            </div>
+        </div>
+
+        <!-- الحاسبة الثانية: (عدد العملات × سعر 100 الف) ÷ 100,000 -->
+        <div class="calculator-card">
+            <h2>حاسبة عدد العملات</h2>
+            <div class="formula-text">الصيغة: (عدد العملات × سعر 100 الف) ÷ 100,000</div>
+            
+            <div class="input-group">
+                <label for="userNumber2">عدد العملات</label>
+                <input type="number" id="userNumber2" value="10" step="any">
+            </div>
+
+            <div class="input-group">
+                <label for="portionNumber2">سعر 100 الف</label>
+                <input type="number" id="portionNumber2" value="2" step="any">
+            </div>
+
+            <div class="result-box">
+                <div class="result-label">النتيجة</div>
+                <div class="result-value" id="resultOutput2">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // منطق الحاسبة الأولى: (100000 × المبلغ المحول) ÷ السعر
+        const uNum1 = document.getElementById('userNumber1');
+        const pNum1 = document.getElementById('portionNumber1');
+        const res1 = document.getElementById('resultOutput1');
+
+        function calc1() {
+            const x = parseFloat(uNum1.value) || 0;
+            const y = parseFloat(pNum1.value) || 0;
+            if (y === 0) {
+                res1.textContent = "خطأ (قسمة على صفر)";
+                return;
+            }
+            const result = (100000 * x) / y;
+            res1.textContent = Number.isInteger(result) ? result : result.toFixed(4);
+        }
+
+        uNum1.addEventListener('input', calc1);
+        pNum1.addEventListener('input', calc1);
+        calc1();
+
+        // منطق الحاسبة الثانية: (عدد العملات × سعر 100 الف) ÷ 100000
+        const uNum2 = document.getElementById('userNumber2');
+        const pNum2 = document.getElementById('portionNumber2');
+        const res2 = document.getElementById('resultOutput2');
+
+        function calc2() {
+            const x = parseFloat(uNum2.value) || 0;
+            const y = parseFloat(portionNumber2.value) || 0;
+            const result = (x * y) / 100000;
+            res2.textContent = Number.isInteger(result) ? result : result.toFixed(4);
+        }
+
+        uNum2.addEventListener('input', calc2);
+        pNum2.addEventListener('input', calc2);
+        calc2();
+    </script>
+
+</body>
+</html>
